@@ -1242,6 +1242,27 @@
               </div>
             </div>
 
+            <!-- Game Speed Selector -->
+            <div class="space-y-1.5">
+              <label class="block text-slate-300 text-xs text-center font-bold">רמת מהירות משחק:</label>
+              <div class="grid grid-cols-3 gap-2 bg-[#030611]/60 p-1 rounded-xl impeccable-border">
+                <button onclick="selectGameSpeed(1.0, this)" id="btn-speed-easy" class="bg-brandGreen-600 text-white font-bold py-1.5 rounded-lg text-[10px] transition-all">קל / Easy</button>
+                <button onclick="selectGameSpeed(1.5, this)" id="btn-speed-medium" class="text-slate-400 font-bold py-1.5 rounded-lg text-[10px] transition-all">בינוני / Medium</button>
+                <button onclick="selectGameSpeed(2.2, this)" id="btn-speed-hard" class="text-slate-400 font-bold py-1.5 rounded-lg text-[10px] transition-all">מהיר / Hard</button>
+              </div>
+            </div>
+
+            <!-- Helper Bot Toggle Checkbox -->
+            <div class="flex justify-between items-center bg-[#030611]/60 impeccable-border p-3 rounded-xl">
+              <div>
+                <span class="text-xs font-bold text-white block">בוט כושר עוזר (Companion Drone) 🤖</span>
+                <span class="text-[9px] text-slate-400">בוט שירחף לידך ויסייע לירות על משקולות!</span>
+              </div>
+              <div class="w-8 h-4 bg-slate-700 rounded-full relative cursor-pointer premium-transition" id="toggle-game-bot" onclick="toggleGameBot()">
+                <div class="w-3.5 h-3.5 bg-white rounded-full absolute right-0.5 top-0.25 transition-all"></div>
+              </div>
+            </div>
+
             <button onclick="startGameEngine()" class="w-full bg-brandGreen-600 hover:bg-brandGreen-500 text-white font-bold py-3 rounded-xl transition-all shadow-md text-xs active:scale-95 flex items-center justify-center gap-2">
               <i data-lucide="play-circle" class="w-4 h-4"></i>
               התחל מלחמה בחדר הכושר! 🕹️
@@ -1250,14 +1271,21 @@
 
           <!-- GAMEPLAY RUNNING CONTAINER -->
           <div id="game-play-container" class="hidden space-y-3 text-center">
-            <div class="flex justify-between items-center bg-[#030611]/60 impeccable-border px-3 py-1.5 rounded-xl text-[10px] font-mono font-bold">
-              <span class="text-brandGreen-400">ניקוד: <span id="game-score">0</span></span>
-              <span class="text-yellow-400">שלב: <span id="game-level">1</span></span>
-              <span class="text-red-400">חיים: <span id="game-lives">❤️❤️❤️</span></span>
+            <!-- Top Controls - Prevention of accidental exit -->
+            <div class="flex justify-between items-center bg-[#030611]/60 impeccable-border px-3 py-2 rounded-xl text-[10px] font-mono font-bold">
+              <button onclick="exitGame()" class="bg-red-500/15 hover:bg-red-500/30 text-red-400 border border-red-500/20 px-2.5 py-1 rounded-lg text-[9px] font-bold transition-all active:scale-95">
+                🚪 צא מהמשחק
+              </button>
+              <div class="flex gap-2">
+                <span class="text-brandGreen-400">ניקוד: <span id="game-score">0</span></span>
+                <span class="text-yellow-400">שלב: <span id="game-level">1</span></span>
+                <span class="text-red-400">חיים: <span id="game-lives">❤️❤️❤️</span></span>
+              </div>
             </div>
             
-            <div class="relative rounded-2xl overflow-hidden border-2 border-brandGreen-500/20 bg-slate-950 glow-green">
-              <canvas id="gym-wars-canvas" width="380" height="300" class="block mx-auto"></canvas>
+            <!-- Canvas scaled up for comfortable gaming -->
+            <div class="relative rounded-2xl overflow-hidden border-2 border-brandGreen-500/20 bg-slate-950 glow-green w-full max-w-[402px] mx-auto">
+              <canvas id="gym-wars-canvas" width="400" height="420" class="block mx-auto"></canvas>
             </div>
             
             <!-- Mobile touch controls -->
@@ -1272,10 +1300,6 @@
                 <i data-lucide="arrow-right" class="w-5 h-5"></i>
               </button>
             </div>
-            
-            <button onclick="exitGame()" class="w-full bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-slate-400 font-bold py-2 rounded-xl transition-all text-xs active:scale-95">
-              חזרה לאפליקציה 🚪
-            </button>
           </div>
 
           <!-- Leaderboard / NeonDB persistent High scores panel -->
@@ -1398,21 +1422,87 @@
       </div>
     </div>
   </div>
+  <!-- ============================================== -->
+  <!-- MODAL: GOOGLE OAUTH SIMULATED SIGN IN -->
+  <!-- ============================================== -->
+  <div id="google-login-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="impeccable-card p-6 w-full max-w-sm space-y-4 shadow-2xl text-center relative border border-white/5 bg-[#0b0f19]">
+      <div class="flex items-center justify-center gap-2 mb-1">
+        <svg class="w-7 h-7 text-white" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.24 10.285V13.4h6.887c-.275 1.565-1.88 4.604-6.887 4.604-4.33 0-7.866-3.577-7.866-8s3.536-8 7.866-8c2.46 0 4.105 1.025 5.047 1.926l2.427-2.334C17.955 2.192 15.34 1 12.24 1 6.033 1 1 6.033 1 12.24s5.033 11.24 11.24 11.24c6.478 0 10.793-4.537 10.793-10.988 0-.746-.08-1.32-.176-1.887H12.24z"/>
+        </svg>
+        <h3 class="text-md font-bold text-white">התחברות באמצעות Google</h3>
+      </div>
+      <p class="text-xs text-slate-400">בחר חשבון כדי להמשיך ל-FitHarmony</p>
+      
+      <div class="space-y-2 text-right">
+        <!-- Account 1 -->
+        <button onclick="confirmGoogleLogin('קובי ספורט', 'kobiko550@gmail.com')" class="w-full flex items-center gap-3 p-3 rounded-xl bg-[#030611]/70 hover:bg-slate-800 border border-white/5 transition-all text-right">
+          <div class="w-8 h-8 rounded-full bg-brandGreen-600 text-white flex items-center justify-center font-bold text-sm">ק</div>
+          <div>
+            <span class="text-xs font-bold text-white block">קובי ספורט</span>
+            <span class="text-[10px] text-slate-400">kobiko550@gmail.com</span>
+          </div>
+        </button>
+        
+        <!-- Account 2 -->
+        <button onclick="confirmGoogleLogin('אורח כושר', 'guest@gmail.com')" class="w-full flex items-center gap-3 p-3 rounded-xl bg-[#030611]/70 hover:bg-slate-800 border border-white/5 transition-all text-right">
+          <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm">א</div>
+          <div>
+            <span class="text-xs font-bold text-white block">אורח כושר</span>
+            <span class="text-[10px] text-slate-400">guest@gmail.com</span>
+          </div>
+        </button>
+
+        <!-- Custom Account Option -->
+        <div class="border-t border-slate-800 pt-3">
+          <label class="block text-[10px] text-slate-400 mb-1">התחבר עם חשבון Google אחר:</label>
+          <div class="flex gap-2">
+            <input type="text" id="google-custom-name" placeholder="שם מלא" class="w-1/2 text-xs py-1.5 px-2 bg-slate-900 rounded-lg text-white">
+            <input type="email" id="google-custom-email" placeholder="אימייל" class="w-1/2 text-xs py-1.5 px-2 bg-slate-900 rounded-lg text-white">
+          </div>
+          <button onclick="loginWithCustomGoogle()" class="w-full mt-2 bg-brandGreen-600 hover:bg-brandGreen-500 text-white font-bold py-2 rounded-xl text-xs transition-all active:scale-95">
+            התחבר כחשבון מותאם אישית
+          </button>
+        </div>
+      </div>
+      
+      <button onclick="closeGoogleLogin()" class="w-full bg-[#030611] hover:bg-slate-850 text-slate-400 font-bold py-2 rounded-xl text-xs transition-all">
+        ביטול
+      </button>
+    </div>
+  </div>
 
   <!-- ============================================== -->
   <!-- MODAL: DYNAMIC IN-APP NOTIFICATIONS -->
   <!-- ============================================== -->
-  <div id="inapp-notification-modal" class="hidden fixed top-4 left-4 right-4 z-50 bg-brandBlue-dark/95 border border-brandGreen-500/30 rounded-2xl p-4 shadow-2xl flex items-center justify-between gap-3 animate-bounce">
+  <div id="inapp-notification-modal" class="hidden fixed top-4 left-4 right-4 z-50 bg-[#0b0f19]/95 border border-brandGreen-500/30 rounded-2xl p-4 shadow-2xl flex items-center justify-between gap-3 animate-bounce">
     <div class="flex items-center gap-3">
       <div class="bg-brandGreen-500/10 text-brandGreen-500 p-2 rounded-xl">
         <i data-lucide="sparkles" class="w-5 h-5"></i>
       </div>
-      <div>
+      <div class="text-right">
         <span class="text-xs font-bold text-white block" id="inapp-notif-title">כל הכבוד! 🎉</span>
         <p class="text-[10px] text-slate-400" id="inapp-notif-desc">הגעת ליעד החלבון היומי שלך! המשך כך.</p>
       </div>
     </div>
     <button onclick="closeInAppModal()" class="text-slate-400 hover:text-white transition-all">
+      <i data-lucide="x" class="w-4 h-4"></i>
+    </button>
+  </div>
+
+  <!-- iOS PWA Floating Banner Prompts -->
+  <div id="ios-pwa-banner" class="hidden fixed bottom-16 left-4 right-4 z-50 bg-[#0b0f19]/95 border border-brandGreen-500/30 rounded-2xl p-4 shadow-2xl flex items-center justify-between gap-3 animate-bounce">
+    <div class="flex items-center gap-3">
+      <div class="bg-brandGreen-500/10 text-brandGreen-500 p-2 rounded-xl">
+        <i data-lucide="plus-square" class="w-5 h-5"></i>
+      </div>
+      <div class="text-right">
+        <span class="text-xs font-bold text-white block">התקן את FitHarmony באייפון שלך! 📱</span>
+        <p class="text-[9px] text-slate-400">לחץ שיתוף <i data-lucide="share" class="inline w-3 h-3 text-blue-400 mx-0.5"></i> ואז <b>"הוסף למסך הבית"</b> <i data-lucide="plus-square" class="inline w-3 h-3 text-brandGreen-500 mx-0.5"></i></p>
+      </div>
+    </div>
+    <button onclick="closeIosBanner()" class="text-slate-400 hover:text-white transition-all">
       <i data-lucide="x" class="w-4 h-4"></i>
     </button>
   </div>
@@ -1450,7 +1540,11 @@
       lastLoggedIn: new Date().toDateString(),
       eatenProtein: 112,
       eatenCarbs: 160,
-      eatenFats: 45
+      eatenFats: 45,
+
+      // Game customization states
+      gameSpeedMultiplier: 1.0,
+      gameBotActive: false
     };
 
     let activityChart = null;
@@ -2699,6 +2793,45 @@
       }
     }
 
+    // Select Game Speed Difficulty
+    function selectGameSpeed(multiplier, btn) {
+      STATE.gameSpeedMultiplier = multiplier;
+      
+      // Update active speed button colors
+      const btnEasy = document.getElementById('btn-speed-easy');
+      const btnMedium = document.getElementById('btn-speed-medium');
+      const btnHard = document.getElementById('btn-speed-hard');
+      
+      btnEasy.className = "text-slate-400 font-bold py-1.5 rounded-lg text-[10px] transition-all";
+      btnMedium.className = "text-slate-400 font-bold py-1.5 rounded-lg text-[10px] transition-all";
+      btnHard.className = "text-slate-400 font-bold py-1.5 rounded-lg text-[10px] transition-all";
+      
+      btn.className = "bg-brandGreen-600 text-white font-bold py-1.5 rounded-lg text-[10px] transition-all";
+      playSynthesizedSound('powerup');
+    }
+
+    // Toggle companion helper bot active state
+    function toggleGameBot() {
+      STATE.gameBotActive = !STATE.gameBotActive;
+      const element = document.getElementById('toggle-game-bot');
+      const dot = element.querySelector('div');
+      
+      if (STATE.gameBotActive) {
+        element.classList.remove('bg-slate-700');
+        element.classList.add('bg-brandGreen-500');
+        dot.classList.remove('right-0.5');
+        dot.classList.add('left-0.5');
+        showInAppNotification("בוט עוזר הופעל! 🤖", "הבוט ילווה אותך בקרב ויעזור לפצל משקולות.");
+      } else {
+        element.classList.add('bg-slate-700');
+        element.classList.remove('bg-brandGreen-500');
+        dot.classList.add('right-0.5');
+        dot.classList.remove('left-0.5');
+        showInAppNotification("בוט עוזר כובה", "Bot companion deactivated");
+      }
+      playSynthesizedSound('powerup');
+    }
+
     function startGameEngine() {
       document.getElementById('game-char-selection').classList.add('hidden');
       document.getElementById('game-play-container').classList.remove('hidden');
@@ -2745,13 +2878,13 @@
         const size = 30; // Radius
         const x = 50 + Math.random() * (gameCanvas.width - 100);
         const y = 40 + i * 30;
-        const vx = (Math.random() < 0.5 ? -1.5 : 1.5) * (1 + gameLevel * 0.15);
-        obstacles.push(new WeightObstacle(x, y, size, 4, vx, -3));
+        const vx = (Math.random() < 0.5 ? -1.5 : 1.5) * (1 + gameLevel * 0.15) * STATE.gameSpeedMultiplier;
+        obstacles.push(new WeightObstacle(x, y, size, 4, vx, -3 * STATE.gameSpeedMultiplier));
       }
 
       // Add a cheat meal obstacle on level 2 and above!
       if (gameLevel >= 2) {
-        obstacles.push(new WeightObstacle(gameCanvas.width / 2, 50, 20, 2, -2, -2, true));
+        obstacles.push(new WeightObstacle(gameCanvas.width / 2, 50, 20, 2, -2 * STATE.gameSpeedMultiplier, -2 * STATE.gameSpeedMultiplier, true));
       }
     }
 
@@ -2835,6 +2968,44 @@
       playerObj.update(gameCanvas.width);
       playerObj.draw(gameCtx);
 
+      // Gym Companion Helper Bot logic
+      if (STATE.gameBotActive) {
+        // Floating hover drone position (hovering to the side and slightly above player)
+        const botTargetX = playerObj.x + 35;
+        const botTargetY = playerObj.y - 65 + Math.sin(Date.now() / 150) * 4;
+        
+        // Render companion drone helper bot
+        gameCtx.save();
+        gameCtx.fillStyle = '#a855f7';
+        gameCtx.shadowBlur = 10;
+        gameCtx.shadowColor = '#a855f7';
+        // Draw head
+        gameCtx.beginPath();
+        gameCtx.arc(botTargetX, botTargetY, 7, 0, Math.PI * 2);
+        gameCtx.fill();
+        // Draw cute glowing eye
+        gameCtx.fillStyle = '#ffffff';
+        gameCtx.beginPath();
+        gameCtx.arc(botTargetX - 2, botTargetY - 1, 2, 0, Math.PI * 2);
+        gameCtx.fill();
+        // Draw micro floating wings
+        gameCtx.strokeStyle = '#3b82f6';
+        gameCtx.lineWidth = 2;
+        gameCtx.beginPath();
+        gameCtx.moveTo(botTargetX + 7, botTargetY);
+        gameCtx.lineTo(botTargetX + 13, botTargetY - 3);
+        gameCtx.moveTo(botTargetX - 7, botTargetY);
+        gameCtx.lineTo(botTargetX - 13, botTargetY - 3);
+        gameCtx.stroke();
+        gameCtx.restore();
+
+        // Auto support laser firing logic (every 85 frames)
+        if (Math.round(Date.now() / 16) % 85 === 0 && projectiles.length < 4) {
+          projectiles.push(new Projectile(botTargetX, botTargetY - 10, 'bot'));
+          playSynthesizedSound('shoot');
+        }
+      }
+
       // Projectiles Laser handling
       for (let i = projectiles.length - 1; i >= 0; i--) {
         const proj = projectiles[i];
@@ -2894,9 +3065,9 @@
               gameScore += obs.splitLevel * 100;
               const nextSize = obs.size * 0.7;
               const nextLevel = obs.splitLevel - 1;
-              // Spawn two smaller plates with lateral velocity bounce
-              obstacles.push(new WeightObstacle(obs.x - 5, obs.y, nextSize, nextLevel, -1.8 * (1 + gameLevel * 0.1), -3));
-              obstacles.push(new WeightObstacle(obs.x + 5, obs.y, nextSize, nextLevel, 1.8 * (1 + gameLevel * 0.1), -3));
+              // Spawn two smaller plates with lateral velocity bounce scaled by difficulty
+              obstacles.push(new WeightObstacle(obs.x - 5, obs.y, nextSize, nextLevel, -1.8 * (1 + gameLevel * 0.1) * STATE.gameSpeedMultiplier, -3 * STATE.gameSpeedMultiplier));
+              obstacles.push(new WeightObstacle(obs.x + 5, obs.y, nextSize, nextLevel, 1.8 * (1 + gameLevel * 0.1) * STATE.gameSpeedMultiplier, -3 * STATE.gameSpeedMultiplier));
             } else {
               gameScore += 50; // Tiny plate destroyed completely
             }
@@ -3521,14 +3692,75 @@
     }
 
     function simulateOAuth(provider) {
+      if (provider === 'Google') {
+        startGoogleLogin();
+        return;
+      }
       showInAppNotification(`מבצע התחברות OAuth דרך ${provider}...`, "Simulating secure OAuth flow");
       setTimeout(() => {
         switchView('dashboard');
       }, 1000);
     }
 
+    function startGoogleLogin() {
+      document.getElementById('google-login-modal').classList.remove('hidden');
+    }
+
+    function closeGoogleLogin() {
+      document.getElementById('google-login-modal').classList.add('hidden');
+    }
+
+    function confirmGoogleLogin(name, email) {
+      closeGoogleLogin();
+      STATE.fullName = name;
+      STATE.email = email;
+      
+      // Update BMR and Macros based on selected user
+      if (name.includes('קובי')) {
+        STATE.currentWeight = 82;
+        STATE.userLevel = 4;
+        STATE.streakDays = 7;
+      } else {
+        STATE.currentWeight = 75;
+      }
+
+      document.getElementById('welcome-text').innerText = `${STATE.lang === 'he' ? 'שלום' : 'Hello'}, ${STATE.fullName}! 👋`;
+      document.getElementById('admin-u1-name').innerText = `${STATE.fullName} (Google)`;
+      document.getElementById('admin-u1-email').innerText = STATE.email;
+      
+      // Show Google Connected Badge in Settings
+      const settingsInstallBtn = document.getElementById('sett-btn-pwa');
+      if (settingsInstallBtn) {
+        const badge = document.createElement('span');
+        badge.id = "google-status-badge";
+        badge.className = "block mt-2 text-[9px] font-bold text-brandGreen-400 bg-brandGreen-500/10 py-1 rounded-lg border border-brandGreen-500/20";
+        badge.innerText = "🟢 מחובר כעת באמצעות חשבון Google";
+        
+        // Remove previous if exists
+        const prevBadge = document.getElementById('google-status-badge');
+        if (prevBadge) prevBadge.remove();
+        settingsInstallBtn.after(badge);
+      }
+
+      updateGamificationDashboard();
+      switchView('dashboard');
+      showInAppNotification("התחברת בהצלחה עם Google! 🟢", `ברוך הבא, ${STATE.fullName} (${STATE.email})`);
+    }
+
+    function loginWithCustomGoogle() {
+      const name = document.getElementById('google-custom-name').value.trim();
+      const email = document.getElementById('google-custom-email').value.trim();
+      if (!name || !email) {
+        showInAppNotification("שגיאת התחברות", "אנא מלא את השדות להתחברות מותאמת אישית");
+        return;
+      }
+      confirmGoogleLogin(name, email);
+    }
+
     function simulateLogout() {
       switchView('auth');
+      const prevBadge = document.getElementById('google-status-badge');
+      if (prevBadge) prevBadge.remove();
       showInAppNotification("התנתקת מהחשבון בהצלחה", "Account logged out");
     }
 
@@ -3768,7 +4000,7 @@
       modal.classList.remove('hidden');
 
       const userAgent = window.navigator.userAgent.toLowerCase();
-      const isIos = /iphone|ipad|ipod/.test(userAgent);
+      const isIos = /iphone|ipad|ipod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
       
       if (isIos) {
         iosInst.classList.remove('hidden');
@@ -3784,10 +4016,36 @@
       }
     }
 
+    // iOS share-sheet banner close control
+    function closeIosBanner() {
+      document.getElementById('ios-pwa-banner').classList.add('hidden');
+    }
+
+    // Detect and trigger PWA promotions automatically
+    function checkPwaInstallability() {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      const isIos = /iphone|ipad|ipod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+      if (isStandalone) return; // Already installed!
+
+      if (isIos) {
+        // Show beautiful iOS floating banner for Safari users after 4 seconds
+        setTimeout(() => {
+          document.getElementById('ios-pwa-banner').classList.remove('hidden');
+          lucide.createIcons();
+        }, 4000);
+      }
+    }
+
+    // Call check on load
+    window.addEventListener('load', checkPwaInstallability);
+
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       STATE.deferredPrompt = e;
       
+      // Android / Chrome: Show native installer modal after 3 seconds
       setTimeout(() => {
         showPwaModal();
       }, 3000);
@@ -3801,9 +4059,15 @@
       if (STATE.deferredPrompt) {
         STATE.deferredPrompt.prompt();
         STATE.deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            showInAppNotification("התקנת PWA החלה! 🚀", "האפליקציה תופיע במסך הבית שלך תוך מספר שניות.");
+          }
           STATE.deferredPrompt = null;
           closePwaModal();
         });
+      } else {
+        // Fallback info
+        showPwaModal();
       }
     }
 
